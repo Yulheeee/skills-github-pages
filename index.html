@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>고급 텍스트 편집기</title>
+  <style>
+    @font-face {
+      font-family: 'SB Aggro';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2303@1.1/SBAggroOTFLight.woff') format('woff');
+      font-weight: 300;
+    }
+    @font-face {
+      font-family: 'SB Aggro';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2303@1.1/SBAggroOTFMedium.woff') format('woff');
+      font-weight: 500;
+    }
+    @font-face {
+      font-family: 'SB Aggro';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2303@1.1/SBAggroOTFBold.woff') format('woff');
+      font-weight: 700;
+    }
+
+    body {
+      font-family: 'SB Aggro', sans-serif;
+      padding: 40px;
+      background: #f9f9f9;
+    }
+
+    .editor-container {
+      position: relative;
+      margin-bottom: 30px;
+    }
+
+    .editable {
+      border: 1px solid #ccc;
+      background: #fff;
+      padding: 20px;
+      min-height: 100px;
+      cursor: text;
+    }
+
+    .toolbar {
+      display: none;
+      position: absolute;
+      top: -50px;
+      left: 0;
+      background: white;
+      border: 1px solid #ccc;
+      padding: 8px;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      z-index: 10;
+    }
+
+    .toolbar select, .toolbar input[type="color"], .toolbar input[type="number"] {
+      margin-right: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>고급 텍스트 편집기</h2>
+
+  <div class="editor-container">
+    <div class="toolbar" id="toolbar">
+      <select id="fontWeight">
+        <option value="300">Light</option>
+        <option value="500" selected>Medium</option>
+        <option value="700">Bold</option>
+      </select>
+      <input type="number" id="fontSize" min="10" max="300" value="70" /> pt
+      <input type="color" id="fontColor" value="#272727" />
+    </div>
+
+    <div id="editor" class="editable" contenteditable="true" style="font-size:70pt; font-weight:500; color:#272727;">
+      여기에 텍스트를 입력하세요
+    </div>
+  </div>
+
+  <script>
+    const editor = document.getElementById('editor');
+    const toolbar = document.getElementById('toolbar');
+    const fontWeight = document.getElementById('fontWeight');
+    const fontSize = document.getElementById('fontSize');
+    const fontColor = document.getElementById('fontColor');
+
+    editor.addEventListener('click', (e) => {
+      const rect = editor.getBoundingClientRect();
+      toolbar.style.display = 'block';
+      toolbar.style.left = rect.left + 'px';
+      toolbar.style.top = (window.scrollY + rect.top - 60) + 'px';
+    });
+
+    fontWeight.addEventListener('change', () => {
+      editor.style.fontWeight = fontWeight.value;
+    });
+
+    fontSize.addEventListener('input', () => {
+      editor.style.fontSize = fontSize.value + 'pt';
+    });
+
+    fontColor.addEventListener('input', () => {
+      editor.style.color = fontColor.value;
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!toolbar.contains(e.target) && !editor.contains(e.target)) {
+        toolbar.style.display = 'none';
+      }
+    });
+  </script>
+
+</body>
+</html>
